@@ -1,63 +1,47 @@
 <script>
-	let name = "jakob";
-	let CircleX = 1
-	let CircleY = 1
-	let count = 0
+	import Navbar from './Navbar.svelte'
+	import Player from './Player.svelte'
+	import AddPlayer from './AddPlayer.svelte'
 
-	function increase() {
-		count = count +1
+	let players = [
+	]
+
+	const addPlayer = (e) => {
+		const newPlayer = e.detail;
+		players = [...players, newPlayer];
 	}
-	function increase2() {
-		count = count +2
-	}
-	function reset() {
-		count = 0
+
+	const removePlayer = e => {
+		players = players.filter(player => player.name !== e.detail)
 	}
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<button class="btn1" on:click={increase}>Click me</button>
-	<button class="btn2" on:click={increase2}>click me too</button>
-	<button class="btn3" on:click={reset}>'SUBTLE OFF-WHITE COLORING'</button>
-	<p>{count}</p>
-</main>
-
 <style>
-	main {
-		background-color: #f8f8ff;
+	:global(body){
+		background-image: url('bluewave.jpg'); 
 	}
-
-	main {
+	.addMenu {
 		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
 	}
-
-	h1 {
-		color: #03a1fc;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	.btn1 {
-		background-color: #03a1fc;
-		border-radius: 12px;
-	}
-	.btn2 {
-		background-color: aquamarine;
-		border-radius: 12px;
-	}
-	.btn3 {
-		background-color: 	#f8f8ff;
-		border-radius: 12px;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	.p1 {
+		color: aliceblue;
+		text-align: center
 	}
 </style>
+
+
+	<Navbar />
+<div class="container">
+	<div class="addMenu">
+		<AddPlayer on:addplayer={addPlayer} />
+	</div>
+
+	{#if players.length === 0}
+	<p class="p1">No Players</p>
+	{:else}
+		{#each players as player}
+			<Player name={player.name} points={player.points} on:removeplayer={removePlayer} />
+	{/each}
+	{/if}
+</div>
+
